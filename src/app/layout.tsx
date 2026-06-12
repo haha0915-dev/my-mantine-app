@@ -15,7 +15,7 @@ const theme = createTheme({
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="ko">
+    <html lang="ko" suppressHydrationWarning>
       <head>
         {/* FOUC(스타일 깨짐)을 방지하는 스크립트 (반드시 head 안에 위치) */}
         <ColorSchemeScript />
