@@ -27,7 +27,7 @@ const isDebugOverride = () => {
   if (debugOverride !== null) return debugOverride;
   debugOverride = readDebugOverride();
   return debugOverride;
-};
+}; 
 
 const shouldLog = () => {
   if (isDevelopmentOrStaging) return true;
