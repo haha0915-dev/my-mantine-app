@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "dotenv -e .env.local -- next dev",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"
@@ -11,6 +11,8 @@
   "dependencies": {
     "@mantine/core": "^9.3.1",
     "@mantine/hooks": "^9.3.1",
+    "@mantine/notifications": "^9.3.1",
+    "netfunnel-sdk": "file:../../../../tmp/netfunnel-patch/package/netfunnel-sdk-1.0.4.tgz",
     "next": "^16.2.9",
     "react": "19.2.4",
     "react-dom": "19.2.4"
@@ -20,6 +22,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9",
     "eslint-config-next": "16.2.9",
     "postcss": "^8.5.15",
