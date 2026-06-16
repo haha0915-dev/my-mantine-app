@@ -3,9 +3,9 @@ import '@mantine/core/styles.css'; // Mantine 핵심 스타일 임포트
 import '@mantine/notifications/styles.css'; // Notifications 스타일 임포트
 import React from 'react';
 import { ColorSchemeScript } from '@mantine/core';
-import { UIProvider } from '@/providers/uiProvider';
 
 import {logger} from '@/utils';
+import { UIProvider , ReactQueryProvider } from '@/providers';
 
 export const metadata = {
   title: 'Next.js Mantine App',
@@ -22,7 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <UIProvider>
-          {children}
+          <ReactQueryProvider>{children}</ReactQueryProvider>
         </UIProvider>
       </body>
     </html>
