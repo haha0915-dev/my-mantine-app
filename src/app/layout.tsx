@@ -5,7 +5,7 @@ import React from 'react';
 import { ColorSchemeScript } from '@mantine/core';
 
 import {logger} from '@/utils';
-import { UIProvider , ReactQueryProvider } from '@/providers';
+import { UIProvider , ReactQueryProvider, MainStoreProvider } from '@/providers';
 
 export const metadata = {
   title: 'Next.js Mantine App',
@@ -22,7 +22,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body>
         <UIProvider>
-          <ReactQueryProvider>{children}</ReactQueryProvider>
+          <MainStoreProvider>
+            <ReactQueryProvider>{children}</ReactQueryProvider>
+          </MainStoreProvider>
         </UIProvider>
       </body>
     </html>
