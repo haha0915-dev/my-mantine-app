@@ -1,4 +1,3 @@
-import type { IShop, IToken } from '@/types';
 
 /**
  * 스마트CS 계정 정보
@@ -28,4 +27,9 @@ export interface IDeviceInfo {
   deviceId: string;
   deviceModelName: string;
   appVersion: string;
+}
+
+export interface IToken {
+  accessToken?: string;
+  refreshToken?: string;
 }

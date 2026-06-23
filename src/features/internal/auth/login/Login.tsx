@@ -1,20 +1,15 @@
+ 'use client';
+
 import { useState, type FormEvent } from 'react';
 
 import { Button, Paper, PasswordInput, Stack, TextInput, Title } from '@mantine/core';
 
-import { useMainStore } from '@/providers';
 import type { ILoginProps } from '@/types/domain/login';
 
-const TEST_ACCOUNT = {
-  id: 'test-001',
-  name: '테스트 사용자',
-  loginId: 'test',
-  employeeNumber: 'EMP001',
-  isRegularEmployee: true,
-};
+import { useLoginHook } from './hooks';
 
 const Login = () => {
-  const setAccount = useMainStore((state) => state.setAccount);
+  const { processLogin } = useLoginHook();
   const [form, setForm] = useState<ILoginProps>({
     loginId: '',
     loginPw: '',
@@ -30,10 +25,8 @@ const Login = () => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setAccount({ ...TEST_ACCOUNT, loginId: form.loginId || TEST_ACCOUNT.loginId });
+    processLogin(form);
   };
-
-  
 
   return (
     <Paper withBorder radius="md" p="xl" shadow="sm">

@@ -22,11 +22,11 @@ const ProtectedPage = ({ children }: { children: ReactNode }) => {
   const account = useMainStore((state: IMainStore) => state.account);
 
   useEffect(() => {
+    logger.log('ProtectedPage: 인증 상태 확인 시작');
     // 토큰 존재 여부 확인 (account.token.accessToken을 통해)
     const hasToken = account?.token?.accessToken;
 
     if (!hasToken) {
-      logger.log('토큰 없음, 로그인으로 리다이렉트');
       redirectToLogin();
       return;
     }
