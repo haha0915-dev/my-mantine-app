@@ -88,3 +88,11 @@ export const createMainStore = (initState: IMainState = defaultInitMainState): S
 
 /** 전역에서 재사용할 기본 메인 스토어 인스턴스 */
 export const mainStore = createMainStore(defaultInitMainState);
+
+/** persist 미들웨어 API (store rehydration 상태 확인용) */
+export const mainStorePersist = (mainStore as unknown as {
+  persist: {
+    hasHydrated: () => boolean;
+    onFinishHydration: (fn: () => void) => () => void;
+  };
+}).persist;

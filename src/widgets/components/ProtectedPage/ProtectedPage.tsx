@@ -1,10 +1,10 @@
 'use client';
 
-import { ReactNode, useEffect } from 'react';
+import { ReactNode, useEffect, useSyncExternalStore } from 'react';
 
 import { useMainStore } from '@/providers';
-import { type IMainStore } from '@/stores';
-import { logger , go} from '@/utils';
+import { mainStorePersist } from '@/stores';
+import { logger, go } from '@/utils';
 
 /**
  * 내부 페이지 진입 전에 인증 상태와 사용자 컨텍스트를 보장하는 컴포넌트입니다.
@@ -18,13 +18,34 @@ const redirectToLogin = () => {
   go.local.login();
 };
 
+/** DOM hydration 완료 여부 */
+const useIsHydrated = () =>
+  useSyncExternalStore(
+    () => () => undefined,
+    () => true,
+    () => false,
+  );
+
+/** Zustand persist store rehydration 완료 여부 */
+const useIsStoreHydrated = () =>
+  useSyncExternalStore(
+    (cb) => mainStorePersist.onFinishHydration(cb),
+    () => mainStorePersist.hasHydrated(),
+    () => false,
+  );
+
 const ProtectedPage = ({ children }: { children: ReactNode }) => {
-  const account = useMainStore((state: IMainStore) => state.account);
+  const account = useMainStore((state) => state.account);
+  const isHydrated = useIsHydrated();
+  const isStoreHydrated = useIsStoreHydrated();
 
   useEffect(() => {
+    if (!isStoreHydrated) return;
+
     logger.log('ProtectedPage: 인증 상태 확인 시작');
-    // 토큰 존재 여부 확인 (account.token.accessToken을 통해)
     const hasToken = account?.token?.accessToken;
+    
+    console.log('Token 확인:', !!hasToken);
 
     if (!hasToken) {
       redirectToLogin();
@@ -32,14 +53,13 @@ const ProtectedPage = ({ children }: { children: ReactNode }) => {
     }
 
     // 토큰은 있지만 계정 정보가 없으면 복원 필요
-    if (!account.id) {
+    if (!account?.id) {
       logger.log('계정 정보 없음, 복원 필요');
       // TODO: 여기에 계정 정보 복원 로직 추가
     }
-  }, [account]);
+  }, [account, isStoreHydrated]);
 
-  // 토큰과 계정 정보가 없으면 렌더링 차단
-  if (!account?.token?.accessToken) {
+  if (!isHydrated || !isStoreHydrated || !account?.token?.accessToken) {
     return null;
   }
 
